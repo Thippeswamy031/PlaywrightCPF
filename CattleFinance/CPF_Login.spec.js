@@ -8,6 +8,8 @@ test('Login to Cattle Finance', async ({ page }) => {
   await expect(page).toHaveTitle('NextGen AgTech');
   await page.getByRole('button', { name: 'Log In' }).click();
   await login.login('user@superadmin.com', 'Welcome@HPAdmin');
-  await page.getByRole('button', { name: 'CATTLE FINANCE' }).click(); 
+  await page.getByRole('button', { name: 'CATTLE FINANCE' }).click();
+  await expect(page).toHaveURL('https://aztest.feedlotmgr.com/lots');
+  await page.waitForTimeout(5000);
 });
 
