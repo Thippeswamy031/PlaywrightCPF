@@ -25,9 +25,6 @@ export class LoginPage {
     async clickCattleFinance() {
         await this.clickOnCattleFinanceButton.click();
     }
-
-
-
 }
 
 

@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "Playwright_PageObjectModel",
+			"path": "../Playwright_PageObjectModel"
+		}
+	],
+	"settings": {}
+}

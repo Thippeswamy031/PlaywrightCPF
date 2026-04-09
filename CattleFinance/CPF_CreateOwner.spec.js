@@ -1,25 +1,39 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { LoginPage } from '../Pages/login.js';
+import { OwnerPage } from '../Pages/ownerPage.js';
+import {generatePhoneNumber, generateRandomEmail, addressGenerator} from '../Pages/utils.js';
 
 
 test('Login to Cattle Finance', async ({ page }) => {
   const login = new LoginPage(page);
+  const ownerPage = new OwnerPage(page);
+
+const userData = {
+  phone: generatePhoneNumber(),
+  contact: generatePhoneNumber(),
+  email: generateRandomEmail(),
+  address: addressGenerator()
+};
 
   await login.gotoLoginPage();
   await login.clickLoginButton();
   await login.login('user@superadmin.com', 'Welcome@HPAdmin');
   await login.clickCattleFinance();
-  await page.getByRole('button', { name: 'Create New' }).click();
-  await page.getByText('New Owner').click();
-  await page.locator("//input[@name='name']").fill('Jaime');
-      function generatePhoneNumber() {
-        const startDigit = ['6', '7', '8', '9'];
-        const firstDigit = startDigit[Math.floor(Math.random() * startDigit.length)];
-        const remainingDigits = Math.floor(Math.random() * 900000000) + 100000000;
-        return firstDigit + remainingDigits; // Already a string (no need for String())
-      }
-
-      const phone = generatePhoneNumber();
-  console.log(phone); // e.g. "9876543210"
-  await page.locator("//input[@name='contact']").fill(phone);
+  await ownerPage.clickCreateNewButton();
+  await ownerPage.clickNewOwner();
+  await ownerPage.fillOwnerName('Jaime');
+  await ownerPage.fillOwnerContact(userData.contact);
+  console.log(userData.phone); // e.g. "9876543210"
+  await ownerPage.fillOwnerEmail(userData.email);
+  // await expect(page.locator("//input[@name='phone']")).toBeEnabled();
+  // await expect(page.locator("//input[@name='phone']")).toBeVisible();
+  await ownerPage.fillOwnerPhone(userData.phone);
+  await page.pause();
+  // await expect(page.locator("//input[@name='phone']")).toHaveAttribute('maxlength', '10');
+  await expect(page.locator("//input[@name='phone']")).toHaveValue(userData.phone);
+  await ownerPage.fillOwnerAddress(userData.address);
+  await ownerPage.fillOwnerCity('Kansas');
+  await ownerPage.fillOwnerState('KS');
+  await ownerPage.fillOwnerZipCode('66101');
+  await ownerPage.clickSubmit();
 });
